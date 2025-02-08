@@ -1,0 +1,1 @@
+Color guessing game is an interesting game where by the player is promted to guess a color randomly displayed on the screen by clicking a matching color among the colored buttons. The user score increments every tim he/she guesses the right color. His/her missed selection is also displayed in the score tab. 
