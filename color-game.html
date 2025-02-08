@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color-game</title>
+    <link rel="stylesheet" href="color-game.css" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1"></script>
+    
+  </head>
+  <body>
+    <div id="color-game-container">
+      <h1>Color Guessing Game</h1>
+      <div class="color-game">
+        <div class="clor-game-screen" data-testid="colorBox"></div>
+        <h2 data-testid="gameInstructions">Guess the correct color!</h2>
+        <div class="color-btns" role="list">
+          <button class="btn" data-testid="colorOption"></button>
+          <button class="btn" data-testid="colorOption"></button>
+          <button class="btn" data-testid="colorOption"></button>
+          <button class="btn" data-testid="colorOption"></button>
+          <button class="btn" data-testid="colorOption"></button>
+          <button class="btn" data-testid="colorOption"></button>
+        </div>
+        <div class="scoreSheet">
+          <button data-testid="newGameStatus">New Game</button>
+          <p data-testid="gameStatus"></p>
+          <p>Score: <span data-testid="gameScore" class="score">0/</span><span class="scoreMiss">0</span></p>
+        </div>
+      </div>
+    </div>
+    <script src="color-game.js"></script>
+  </body>
+</html>

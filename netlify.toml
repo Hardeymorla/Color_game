@@ -1,0 +1,4 @@
+[[redirects]]
+from = "/*"
+to =  "/color-game.html"
+status = 200
