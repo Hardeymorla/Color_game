@@ -3,15 +3,18 @@ const colorBtns = document.querySelectorAll(".btn");
 const gameStatus = document.querySelector('[data-testid="gameStatus"]');
 const showScore = document.querySelector(".score");
 const scoreMiss = document.querySelector(".scoreMiss");
-const newGameStatus = document.querySelector('[data-testid="newGameStatus"]'); // Select the new game button
+const newGameStatus = document.querySelector('[data-testid="newGameStatus"]');
+const timerEl = document.querySelector(".timeLeft");
 
 let score = 0;
 let miss = 0;
+let timeLeft = 10; // Initial countdown time
+let timerInterval;
 let results = [];
 
 // Generate Random Colors
 function getColorArray() {
-    results = []; // Reset array before generating new colors
+    results = [];
     for (let i = 0; i < 6; i++) {
         let color = "#";
         const letters = "0123456789ABCDEF";
@@ -26,6 +29,7 @@ function getColorArray() {
 function assignColor() {
     colorBtns.forEach((btn, index) => {
         btn.style.background = results[index];
+        btn.disabled = false; // Ensure buttons are enabled when game resets
     });
 }
 
@@ -52,13 +56,14 @@ function checkBackgroundColor() {
                 gameStatus.textContent = "You guessed right! 🎉";
                 score++;
                 showScore.textContent = `${score} /`;
-                showConfetti(); // 🎊 Trigger confetti animation
+                showConfetti();
             } else {
                 gameStatus.textContent = "You guessed wrong! 😢";
                 miss++;
-                scoreMiss.textContent = ` ${miss}`;
+                scoreMiss.textContent = `${miss}`;
             }
-            resetGame(); // Dynamically change colors
+            resetGame(); // Generate new colors and target
+            restartTimer(); // Restart the timer on every button click
         });
     });
 }
@@ -70,22 +75,45 @@ function resetGame() {
     setRandomBackgroundColor();
 }
 
-// Restart Game - Resets Everything when the button is clicked
+// Restart Timer (Resets to 10 seconds)
+function restartTimer() {
+    clearInterval(timerInterval); // Clear existing timer
+    timeLeft = 5; // Reset time
+    timerEl.textContent = `Time left: ${timeLeft} seconds`;
+    
+    timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timerEl.textContent = "Time's up!";
+            endGame(); // Stop game when time runs out
+        } else {
+            timeLeft--;
+            timerEl.textContent = `Time left: ${timeLeft} seconds`;
+        }
+    }, 1000);
+}
+
+// End Game (Disable buttons when time runs out)
+function endGame() {
+    gameStatus.textContent = "Game Over! Click 'New Game' to restart.";
+    colorBtns.forEach((btn) => btn.disabled = true);
+}
+
+// Restart Game - Resets Everything when "New Game" button is clicked
 function restartGame() {
-    score = 0; // Reset score
-    miss = 0;  // Reset misse scores
-    showScore.textContent = `${score} /`; // Update score display
-    scoreMiss.textContent = ` ${miss}`;   // Update Missed score display
-    gameStatus.textContent = "Game restarted! Try again."; // Reset message
-    resetGame(); // Reset colors and target
+    score = 0;
+    miss = 0;
+    showScore.textContent = `${score} /`;
+    scoreMiss.textContent = `${miss}`;
+    gameStatus.textContent = "Game restarted! Try again.";
+    
+    resetGame(); // Reset colors
+    restartTimer(); // Restart the timer
 }
 
 // Add event listener to the "New Game" button
 newGameStatus.addEventListener("click", restartGame);
 
 // Initialize game
-getColorArray();
-assignColor();
-setRandomBackgroundColor();
-checkBackgroundColor(); // Only run once
-
+restartGame();
+checkBackgroundColor();
